@@ -163,7 +163,7 @@
           let homePageRegistrationCaseParam = {
             languageTypeId : that.$GLOBAL.CHINESE_WEBSITE
             , page: 0
-            , size: 3
+            , size: 4
           };
           this.$network.post(that.$GLOBAL.homePageRegistrationCase,homePageRegistrationCaseParam,null,function (data) {
             that.homePageRegistrationCaseList = data.content;
