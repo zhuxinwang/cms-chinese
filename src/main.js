@@ -16,7 +16,6 @@ Vue.use(iView);  //在vue中使用iview
 Vue.prototype.$GLOBAL = global;
 Vue.prototype.$network = network;
 
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

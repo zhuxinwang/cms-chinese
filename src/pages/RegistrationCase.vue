@@ -37,7 +37,7 @@
           , registrationCaseList: []
         }
       }
-      
+
       , created:function () {
         this.registrationCase(0,9)
       }

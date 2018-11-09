@@ -2,7 +2,6 @@
 let BaseURLAPI = 'http://49.4.78.57:8083/';
 let UrlPrefix = 'http://49.4.78.57:8081/upload/';
 
-
 let CHINESE_WEBSITE = 1;  //中文网站
 let ENGLISH_WEBSITE = 2;  //英文网站
 
