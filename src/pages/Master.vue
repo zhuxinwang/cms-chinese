@@ -21,7 +21,7 @@
           </div>
           <div class="master-Menu">
             <Menu mode="horizontal" active-name = 1>
-              <MenuItem v-for="item in masterNavigationList" v-bind:name="item.aid" :to="item.hyperlink">
+              <MenuItem v-for="item in masterNavigationList" :key="item.aid" v-bind:name="item.aid" :to="item.hyperlink">
                 {{item.name}}
               </MenuItem>
             </Menu>

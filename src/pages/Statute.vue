@@ -1,7 +1,8 @@
 <template>
-    <div>
-      法规页面
-    </div>
+  <div class="public-width">
+    <h1>法规</h1>
+  </div>
+
 </template>
 
 <script>

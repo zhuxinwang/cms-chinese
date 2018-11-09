@@ -5,10 +5,10 @@ import App from './App'
 import router from './router'
 import iView from 'iview' //引入iview组件库
 import 'iview/dist/styles/iview.css'  //引入iview的css
+import "babel-polyfill"
 
 import global from './assets/js/Global' //导入全局参数
 import network from './assets/js/NetworkAPI' //导入网络请求工具
-
 
 
 Vue.config.productionTip = false;
@@ -24,8 +24,6 @@ new Vue({
   components: { App },
   template: '<App/>'
 });
-
-
 
 
 // 兼容ie浏览器indexOf方法
@@ -46,3 +44,12 @@ if (!Array.prototype.indexOf) {
     return -1;
   };
 }
+
+router.beforeEach((to, from, next) => {
+  iView.LoadingBar.start();
+  next();
+});
+
+router.afterEach(route => {
+  iView.LoadingBar.finish();
+});

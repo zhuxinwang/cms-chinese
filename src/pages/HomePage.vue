@@ -1,12 +1,10 @@
 <template>
   <div>
     <!--轮播图-->
-    <Row class="public-row">
-      <Col :xs="0" :sm="1" :md="2" :lg="4" class="public-col"></Col>
-      <Col :xs="0" :sm="23" :md="19" :lg="15" class="carousel-col-height-aoto">
-        <Carousel autoplay loop autoplay-speed="3000">
-          <CarouselItem class="img-pointer" v-for="item in carouselList">
-            <div><img v-bind:src="item.address" /></div>
+    <div class="public-width">
+        <Carousel autoplay loop :autoplay-speed="3000">
+          <CarouselItem class="img-pointer" v-for="(item) in carouselList" :key="item.aid">
+            <img @click="carouselJump(item.canClick,item.isNewWindow,item.hyperlink)" class="carousel" v-bind:src="item.address" />
           </CarouselItem>
         </Carousel>
 
@@ -40,84 +38,68 @@
             </div>
           </div>
         </div>
-      </Col>
-      <Col :xs="0" :sm="1" :md="2" :lg="5" class="public-col"></Col>
 
-    </Row>
+    </div>
       <!--1.案例-->
       <div class="homepage-case">
-        <Row>
-          <Col :xs="0" :sm="1" :md="2" :lg="4" class="public-col"></Col>
-          <Col :xs="0" :sm="1" :md="2" :lg="15">
-            <div>
-              <div class="item-title"><img src="../assets/img/left.png"/><span>注册案例</span><img src="../assets/img/right.png"/></div>
-              <div class="registration-case">
-                <Row>
-                  <Col v-for="(item,index) in homePageRegistrationCaseList" span="6" :offset="index===0 ? 0 : 3">
-                    <Card :bordered="false">
-                      <p class="case-title">{{item.title}}</p>
-                      <p class="case-time">{{item.createTime}}</p>
-                      <p class="case-summary">{{item.summary}}</p>
-                      <div>
-                        <div class="case-img">
-                          <img class="case-img" v-show="item.thumbnailUrl"  v-bind:src="item.thumbnailUrl"/>
-                        </div>
-                        <Button class="case-button" v-on:click="jumpCaseOrNews('case',item.aid)">查看案例</Button>
-                      </div>
-
-                    </Card>
-                  </Col>
-                </Row>
-              </div>
-            </div>
-          </Col>
-          <Col :xs="0" :sm="1" :md="2" :lg="5" class="public-col"></Col>
-        </Row>
-      </div>
-
-      <!--2.新闻-->
-      <Row>
-        <Col :xs="0" :sm="1" :md="2" :lg="4" class="public-col"></Col>
-        <Col :xs="0" :sm="1" :md="2" :lg="15">
-          <div class="item-title"><img src="../assets/img/left.png"/><span>新闻资讯</span><img src="../assets/img/right.png"/></div>
-          <div class="news-item">
+        <div class="public-width">
+          <div class="case-top"></div>
+          <div class="item-title"><img src="../assets/img/left.png"/><span>注册案例</span><img src="../assets/img/right.png"/></div>
+          <div class="registration-case">
             <Row>
-              <Col class="news-item-padding" v-for="(item,index) in homePageNewsList" span="11" :offset="index%2===0 ? 0 : 2">
-                <Card>
-                    <div class="news-img">
-                      <img class="news-img" v-show="item.thumbnailUrl"  v-bind:src="item.thumbnailUrl"/>
+              <Col class="case-item" v-for="(item) in homePageRegistrationCaseList" :key="item.aid">
+                <Card :bordered="false">
+                  <p class="case-title">{{item.title}}</p>
+                  <p class="case-time">{{item.createTime}}</p>
+                  <p class="case-summary">{{item.summary}}</p>
+                  <div>
+                    <div class="case-img">
+                      <img class="case-img" v-show="item.thumbnailUrl"  v-bind:src="item.thumbnailUrl"/>
                     </div>
-                    <div class="news-info">
-                      <p class="case-title">{{item.title}}</p>
-                      <p class="case-summary">{{item.summary}}</p>
-                    </div>
-                    <Button class="news-button" type="text" v-on:click="jumpCaseOrNews('news',item.aid)">查看新闻</Button>
+                    <Button class="case-button" v-on:click="jumpCaseOrNews('case',item.aid)">查看案例</Button>
+                  </div>
+
                 </Card>
               </Col>
             </Row>
           </div>
-        </Col>
-        <Col :xs="0" :sm="1" :md="2" :lg="5" class="public-col"></Col>
-      </Row>
+        </div>
+      </div>
 
+      <!--2.新闻-->
+    <div class="public-width">
+      <div class="item-title"><img src="../assets/img/left.png"/><span>新闻资讯</span><img src="../assets/img/right.png"/></div>
+      <div class="news">
+        <Row>
+          <Card class="news-item" v-for="(newsItem) in homePageNewsList" :key="newsItem.aid">
+            <div class="news-detail" v-on:click="jumpCaseOrNews('news',newsItem.aid)">
+              <img class="news-img" v-show="newsItem.thumbnailUrl"  v-bind:src="newsItem.thumbnailUrl"/>
+              <div class="news-info">
+              <p class="news-title">{{newsItem.title}}</p>
+              <p class="news-summary">{{newsItem.summary}}</p>
+              <Button class="news-button" type="text" v-on:click="jumpCaseOrNews('news',newsItem.aid)">查看新闻</Button>
+              </div>
+            </div>
+          </Card>
+        </Row>
+      </div>
+    </div>
 
     <!--3.友情链接-->
     <Row>
-      <Col :xs="0" :sm="1" :md="2" :lg="4" class="public-col"></Col>
-      <Col :xs="0" :sm="1" :md="2" :lg="15">
+      <div class="public-width">
         <div class="item-title"><img src="../assets/img/left.png"/><span>友情链接</span><img src="../assets/img/right.png"/></div>
-          <div class="foot-friendshipLink" v-for="(item,index) in friendshipLinkList" @click="jumpThirdPartyWebsite(item.aid,item.hyperlink)">
-            <div class="friendshipLink">
-              <div class="friendshipLink-img-info" >
-              <img class="friendshipLink-img" v-show="item.thumbnailUrl"  v-bind:src="item.thumbnailUrl"/>
-              </div>
-              <Tooltip :content=item.name>
-                <div class="friendshipLink-info">{{item.name}}</div>
-              </Tooltip>
+        <div class="foot-friendshipLink" v-for="item in friendshipLinkList" :key="item.aid" @click="jumpThirdPartyWebsite(item.aid,item.hyperlink)">
+          <div class="friendshipLink">
+            <div class="friendshipLink-img-info" >
+            <img class="friendshipLink-img" v-show="item.thumbnailUrl"  v-bind:src="item.thumbnailUrl"/>
             </div>
+            <Tooltip :content=item.name>
+              <div class="friendshipLink-info">{{item.name}}</div>
+            </Tooltip>
           </div>
-      </Col>
-      <Col :xs="0" :sm="1" :md="2" :lg="5" class="public-col"></Col>
+        </div>
+      </div>
     </Row>
     <BackTop :height="100" :bottom="200">
       <div class="top">返回顶端</div>
@@ -125,7 +107,6 @@
   </div>
 
 </template>
-
 
 
 <script>
@@ -136,6 +117,7 @@
           carouselList: []
           , homePageRegistrationCaseList: []
           , homePageNewsList: []
+          , friendshipLinkList: []
         }
       }
       , created: function () {
@@ -148,7 +130,7 @@
         //1.加载轮播图片
         carousel: function () {
           let that = this;
-          this.$network.post(that.$GLOBAL.carousel,null,null,function (data) {
+          this.$network.post(that.$GLOBAL.carousel,null,function (data) {
             that.carouselList = data;
             //拼接图片访问地址
             let listLength = that.carouselList.length;
@@ -160,12 +142,12 @@
         //2.加载3个案例
         , homePageRegistrationCase: function () {
           let that = this;
-          let homePageRegistrationCaseParam = {
+          let caseParam = {
             languageTypeId : that.$GLOBAL.CHINESE_WEBSITE
             , page: 0
-            , size: 4
+            , size: 3
           };
-          this.$network.post(that.$GLOBAL.homePageRegistrationCase,homePageRegistrationCaseParam,null,function (data) {
+          this.$network.post(that.$GLOBAL.caseApplication,caseParam,function (data) {
             that.homePageRegistrationCaseList = data.content;
             //拼接图片访问地址
             let listLength = that.homePageRegistrationCaseList.length;
@@ -180,13 +162,14 @@
         //3.加载4个新闻
         , homePageNews : function () {
           let that = this;
-          let homePageNewsParam = {
+          let newsParam = {
             languageTypeId : that.$GLOBAL.CHINESE_WEBSITE
             , page: 0
             , size: 4
             , tagList: '-1'
+            , title: '-1'
           };
-          this.$network.post(that.$GLOBAL.homePageNews,homePageNewsParam,null,function (data) {
+          this.$network.post(that.$GLOBAL.getNews,newsParam,function (data) {
             that.homePageNewsList = data.content;
             //拼接图片访问地址
             let listLength = that.homePageNewsList.length;
@@ -202,7 +185,7 @@
         //4.加载友情链接
         , chineseFriendshipLink: function () {
           let that = this;
-          this.$network.post(that.$GLOBAL.chineseFriendshipLink,null,null,function (data) {
+          this.$network.post(that.$GLOBAL.chineseFriendshipLink,null,function (data) {
             that.friendshipLinkList = data;
             //拼接图片访问地址
             let listLength = that.friendshipLinkList.length;
@@ -219,16 +202,16 @@
           let countFriendshipLinkClickParams = {
             friendshipLinkAid : friendshipLinkAid
           };
-          this.$network.post(this.$GLOBAL.countFriendshipLinkClick,countFriendshipLinkClickParams,null,null)
+          this.$network.post(this.$GLOBAL.countFriendshipLinkClick,countFriendshipLinkClickParams,null)
         }
 
-        //6.轮播图点击跳转 TODO click事件不点击也会执行
+        //6.轮播图点击跳转
         , carouselJump: function (canClick,isNewWindow,hyperlink) {
           if(canClick){
             if(isNewWindow){
-              window.location.href =hyperlink;
+              window.open(hyperlink);
             }else{
-
+              window.location.href = hyperlink;
             }
           }
         }
@@ -246,6 +229,7 @@
         , jumpThirdPartyWebsite: function (aid,hyperlink) {
           this.countFriendshipLinkClick(aid);
           //新窗口打开跳转
+          window.open(hyperlink);
         }
       }
     }
@@ -253,171 +237,353 @@
 
 <style scoped>
 
-.img-pointer{
-  cursor: pointer;
-}
+  .carousel{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
 
-.carousel-col-height-aoto{
-  height: auto;
-}
+  .homepage-case{
+    margin-top: 1rem;
+    height: auto;
+    background-color: rgba(45,140,240,.07);
+  }
 
-.homepage-marketing{
-  margin-top: 1rem;
-  border: 1px solid #D7D7D7;
-  min-height: 5.7rem;
-}
+  .item-title{
+    margin-top: 1.5rem;
+    vertical-align: middle;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+  }
 
-.marketing-item{
-  margin-top: 1rem;
-  margin-left: -1px;
-  float: left;
-  height: 3.5rem;
-  width: 21rem;
-  border-left: 1px solid #D7D7D7;
-}
+  .item-title > img{
+    vertical-align: middle;
+    height: 2.3rem;
+    width: 2.3rem;
+  }
 
-.marketing-item > div{
-  display: inline-block;
-  margin-left: 1.5rem;
-  vertical-align: middle;
-}
+  /*友情链接*/
+  .foot-friendshipLink{
+    float: left;
+    margin-top: 1rem;
+    cursor: pointer;
+    height: 4.3rem;
+    width: 20%;
+    padding: 0.1rem;
+  }
+  .friendshipLink{
+    border: 1px solid #D7D7D7;
+  }
 
-.marketing-item > img{
-  margin-left: 2.5rem;
-  height: 3.5rem;
-  width: 3.5rem;
-  vertical-align: middle;
-}
+  .friendshipLink:hover {
+    border: 1px solid #2D8CF0;
+  }
 
-.marketing-item-text{
-  font-size: 1rem;
-  font-weight: 600;
-}
+  .friendshipLink-img-info{
+    margin-top: 0.3rem;
+    margin-left: 0.4rem;
+    display:inline-block;
+    vertical-align: middle;
+  }
 
-.homepage-case{
-  margin-top: 1.5rem;
-  height: 21rem;
-  background-color: rgba(45,140,240,.07);
-}
+  .friendshipLink-img{
+    width: 3.6rem;
+    height: 3.6rem;
+  }
 
-.item-title{
-  margin-top: 1.5rem;
-  vertical-align: middle;
-  font-size: 1.3rem;
-  font-weight: 600;
-  text-align: center;
-}
+  .friendshipLink-info{
+    font-size: 1rem;
+    font-weight: 600;
+    width: 10rem;
+    margin-left: 0.4rem;
+    display:inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-.item-title > img{
-  vertical-align: middle;
-  height: 2.3rem;
-  width: 2.3rem;
-}
 
-.registration-case{
-  margin-top: 1.5rem;
-}
+  /*marketing*/
+  .homepage-marketing{
+    margin-top: 1rem;
+    border: 1px solid #D7D7D7;
+    min-height: 5.7rem;
+  }
 
-.case-title{
-  font-size: 1rem;
-  font-weight: 600;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;width:100%;
-}
+  .marketing-item{
+    margin-top: 1rem;
+    margin-left: -1px;
+    float: left;
+    height: 3.5rem;
+    width: 25%;
+    border-left: 1px solid #D7D7D7;
+  }
 
-.case-time{
-  padding-bottom: 0.2rem;
-  border-bottom: 1px solid #2D8CF0;
-}
+  .marketing-item > img{
+    margin-left: 2.5rem;
+    height: 3.5rem;
+    width: 3.5rem;
+    vertical-align: middle;
+  }
 
-.case-summary{
-  margin-top: 0.8rem;
-  overflow: hidden;
-  text-overflow: ellipsis;width:100%;
-  display:-webkit-box;
-  -webkit-box-orient:vertical;
-  -webkit-line-clamp:2;
-  height: 3rem;
-}
-.case-img{
-  margin-top: 0.5rem;
-  height: 4rem;
-  width: 10rem;
-  vertical-align: bottom;
-}
+  .marketing-item > div{
+    display: inline-block;
+    margin-left: 1.5rem;
+    vertical-align: middle;
+  }
 
-.case-button{
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
+  .marketing-item-text{
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /*注冊案例*/
+  .case-item{
+    width: 33.33%;
+    float: left;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .case-top{
+    height: 0.1rem;
+  }
+
+  .case-time{
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid #2D8CF0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;width:100%;
+  }
+
+  .registration-case{
+    margin-top: 1.5rem;
+  }
+
+  .case-title{
+    font-size: 1rem;
+    font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;width:100%;
+  }
+  .case-summary{
+    margin-top: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;width:100%;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    height: 3rem;
+  }
+  .case-img{
+    margin-top: 0.5rem;
+    height: 4rem;
+    width: 10rem;
+    vertical-align: bottom;
+  }
+
+  .case-button{
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  /*新闻资讯*/
+  .news{
+    margin-top: 1rem;
+  }
+
+  .news-title{
+    font-size: 1rem;
+    font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;width:100%;
+  }
+
+  .news-summary{
+    margin-top: 0.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;width:100%;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    height: 3rem;
+  }
+
+  .news-item{
+    padding: 0.3rem;
+    border: 1px solid #D7D7D7;
+    margin-bottom: 1rem;
+    width: 48%;
+    float: left;
+    cursor: pointer;
+  }
+
+  .news-img{
+    float: left;
+    height: 6rem;
+    width: 13rem;
+  }
+
+  .news-info{
+    float: left;
+    width: 60%;
+    margin-left: 1rem;
+  }
+
+  .news-detail{
+    height: 6rem;
+  }
+
+  @media screen and (min-width: 1200px){
+
+    .news-item:nth-child(even){
+      margin-left: 2%;
+    }
+    .news-item:nth-child(odd){
+      margin-right: 2%;
+    }
+
+
+  }
+
+  @media screen and (min-width: 960px) and (max-width: 1199px){
+
+    .news-item:nth-child(even){
+      margin-left: 2%;
+    }
+    .news-item:nth-child(odd){
+      margin-right: 2%;
+
+    }
+
+    .foot-friendshipLink{
+      width: 20%;
+    }
+
+    .friendshipLink-info{
+      width: 12rem;
+    }
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 959px){
+    .homepage-marketing{
+      min-height: 10rem;
+    }
+
+    .marketing-item{
+      width: 50%;
+    }
+
+    .case-item{
+      width: 100%;
+    }
+
+    .news-item{
+      width: 100%;
+    }
+
+    .foot-friendshipLink{
+      width: 33.333%;
+    }
+
+    .friendshipLink-info{
+      width: 14rem;
+    }
+  }
+
+  @media screen and (min-width: 480px) and (max-width: 767px){
+    .homepage-marketing{
+      min-height: 10rem;
+    }
+    .marketing-item{
+      width: 50%;
+    }
+    .marketing-item > img{
+      height: 2.8rem;
+      width: 2.8rem;
+    }
+
+    .case-item{
+      width: 100%;
+    }
+
+    .news-item{
+      width: 100%;
+    }
+
+    .news-button{
+      display: none;
+    }
+
+    .news-img{
+      height: 4rem;
+      width: 9rem;
+    }
+
+    .news-detail{
+      height: 4.5rem;
+    }
+
+    .foot-friendshipLink{
+      width: 50%;
+    }
+
+    .friendshipLink-info{
+      width: 14rem;
+    }
+  }
+
+  @media screen and (max-width: 479px){
+    .homepage-marketing{
+      min-height: 18rem;
+    }
+
+    .marketing-item{
+      height: 3.2rem;
+      width: 100%;
+    }
+    .marketing-item > img{
+      height: 2.8rem;
+      width: 2.8rem;
+    }
+
+    .case-item{
+      width: 100%;
+    }
+
+    .news-item{
+      width: 100%;
+    }
+    .news-button{
+      display: none;
+    }
+
+    .news-img{
+      height: 4rem;
+      width: 9rem;
+    }
+
+    .news-info{
+      width: 45%;
+    }
+
+    .news-detail{
+      height: 4.5rem;
+    }
+
+    .foot-friendshipLink{
+      width: 100%;
+    }
+
+    .friendshipLink-info{
+      width: 14rem;
+    }
 }
-
-.news-item{
-  margin-top: 1.5rem;
-}
-
-.news-img{
-  float: left;
-  height: 6rem;
-  width: 13rem;
-  vertical-align: middle;
-}
-
-.news-info{
-  float: left;
-  width: 60%;
-  margin-left: 1rem;
-  vertical-align: middle;
-}
-
-.news-item-padding{
-  padding-bottom: 1rem;
-}
-
-.news-button{
- margin-left: 16rem;
-}
-
-.foot-friendshipLink{
-  float: left;
-  margin-top: 1rem;
-  margin-left: 0.65rem;
-  margin-bottom: 1rem;
-  border: 1px solid #D7D7D7;
-  cursor: pointer;
-  height: 4.3rem;
-  width: 13.5rem;
-}
-
-/**
-TODO :hover加上会将里面的div也改变边框，后续待改进
-/*.foot-friendshipLink :hover{*/
-  /*border: #2D8CF0;*/
-/*}*/
-
-.friendshipLink-img-info{
-  margin-top: 0.3rem;
-  margin-left: 0.4rem;
-  display:inline-block;
-  vertical-align: middle;
-}
-
-.friendshipLink-img{
-  width: 3.6rem;
-  height: 3.6rem;
-}
-
-.friendshipLink-info{
-  font-size: 1rem;
-  font-weight: 600;
-  width: 8rem;
-  margin-left: 0.4rem;
-  display:inline-block;
-  vertical-align: middle;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 </style>

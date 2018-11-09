@@ -1,32 +1,24 @@
 <template>
-    <div>
-      <Row class="public-row">
-        <Col :xs="0" :sm="1" :md="2" :lg="4" class="public-col"></Col>
-        <Col :xs="0" :sm="23" :md="19" :lg="15" class="carousel-col-height-aoto">
-          <h3>注册服务申请案例</h3>
+    <div class="public-width">
+      <h3>注册服务申请案例</h3>
+      <div class="case-info">
+        <Row>
+          <Col class="registration-case" v-for="(item,index) in registrationCaseList" :key="index">
+            <Card :bordered="false">
+              <p class="case-title">{{item.title}}</p>
+              <p class="case-time">{{item.createTime}}</p>
+              <p class="case-summary">{{item.summary}}</p>
+              <div>
+                <div class="case-img">
+                  <img class="case-img" v-show="item.thumbnailUrl"  v-bind:src="item.thumbnailUrl"/>
+                </div>
+                <Button class="case-button" v-on:click="jumpCaseDetail(item.aid)">查看案例</Button>
+              </div>
 
-          <div class="case-info">
-            <Row>
-              <Col class="registration-case" v-for="(item,index) in registrationCaseList" span="6" :offset="index===0 ? 0 : 3">
-                <Card :bordered="false">
-                  <p class="case-title">{{item.title}}</p>
-                  <p class="case-time">{{item.createTime}}</p>
-                  <p class="case-summary">{{item.summary}}</p>
-                  <div>
-                    <div class="case-img">
-                      <img class="case-img" v-show="item.thumbnailUrl"  v-bind:src="item.thumbnailUrl"/>
-                    </div>
-                    <Button class="case-button" v-on:click="jumpCaseDetail(item.aid)">查看案例</Button>
-                  </div>
-
-                </Card>
-              </Col>
-            </Row>
-          </div>
-        </Col>
-        <Col :xs="0" :sm="1" :md="2" :lg="5" class="public-col"></Col>
-
-      </Row>
+            </Card>
+          </Col>
+        </Row>
+      </div>
       <div class="page-paging">
         <Page :total=totalElements :current=page :page-size=size @on-change="handlePage" show-total/>
       </div>
@@ -58,7 +50,7 @@
             , page: page
             , size: size
           };
-          this.$network.post(that.$GLOBAL.homePageRegistrationCase, registrationCaseParam, null, function (data) {
+          this.$network.post(that.$GLOBAL.caseApplication, registrationCaseParam, function (data) {
             that.registrationCaseList = data.content;
             //获取总页数
             that.totalElements = data.totalElements;
@@ -95,14 +87,16 @@
 .case-info{
   margin-top: 1rem;
   background-color: rgba(45,140,240,.07);
+  width: 100%;
 }
 
 .registration-case{
-  margin-top: 2rem;
-  margin-left: 5.2rem;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
+  margin-left: 2.5%;
+  width: 30%;
+  float: left;
 }
-
 
 .case-title{
   font-size: 1rem;
@@ -115,6 +109,9 @@
 .case-time{
   padding-bottom: 0.2rem;
   border-bottom: 1px solid #2D8CF0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;width:100%;
 }
 
 .case-summary{
@@ -139,5 +136,30 @@
   bottom: 1rem;
 }
 
+
+@media screen and (min-width: 768px) and (max-width: 959px) {
+  .registration-case{
+    margin-top: 1rem;
+    margin-left: 3%;
+    width: 45.5%;
+  }
+
+}
+
+@media screen and (min-width: 480px) and (max-width: 765px) {
+  .registration-case{
+    margin-top: 1rem;
+    margin-left: 3%;
+    width: 94%;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .registration-case{
+    margin-top: 1rem;
+    margin-left: 3%;
+    width: 94%;
+  }
+}
 
 </style>
