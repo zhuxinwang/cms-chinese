@@ -12,7 +12,7 @@
           <div class="marketing-item">
             <img src="../assets/img/passid 注册电话.png"/>
             <div>
-              <div class="marketing-item-text">注册服务</div>
+              <div class="marketing-item-text">注册服务申请</div>
               <div>方便快捷的注册服务</div>
             </div>
           </div>
@@ -30,13 +30,13 @@
               <div>各国药械价格实时调研</div>
             </div>
           </div>
-          <div class="marketing-item">
-            <img src="../assets/img/文献.png"/>
-            <div>
-              <div class="marketing-item-text">文献检索</div>
-              <div>强大的数据支持</div>
-            </div>
-          </div>
+          <!--<div class="marketing-item">-->
+            <!--<img src="../assets/img/文献.png"/>-->
+            <!--<div>-->
+              <!--<div class="marketing-item-text">术语解释</div>-->
+              <!--<div>各国药法规、流程术语解释</div>-->
+            <!--</div>-->
+          <!--</div>-->
         </div>
 
     </div>
@@ -47,6 +47,7 @@
           <div class="item-title"><img src="../assets/img/left.png"/><span>注册案例</span><img src="../assets/img/right.png"/></div>
           <div class="registration-case">
             <Row>
+              <div class="public-all"><router-link to="registrationcase">查看全部</router-link></div>
               <Col class="case-item" v-for="(item) in homePageRegistrationCaseList" :key="item.aid">
                 <Card :bordered="false">
                   <p class="case-title">{{item.title}}</p>
@@ -70,6 +71,7 @@
     <div class="public-width">
       <div class="item-title"><img src="../assets/img/left.png"/><span>新闻资讯</span><img src="../assets/img/right.png"/></div>
       <div class="news">
+        <div class="public-all"><router-link to="news">查看全部</router-link></div>
         <Row>
           <Card class="news-item" v-for="(newsItem) in homePageNewsList" :key="newsItem.aid">
             <div class="news-detail" v-on:click="jumpCaseOrNews('news',newsItem.aid)">

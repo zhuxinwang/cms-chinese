@@ -13,9 +13,24 @@
               <div class="master-Menu">
                 <Menu ref="contactMenu" mode="vertical" :active-name = activeName @on-select="updateMenu">
                   <MenuItem :name=item.aid v-for="(item,index) in masterNavigationList" :key="index" :to="item.hyperlink" >
-                    {{item.name}}
+                    <span v-if="item.aid !== 5">{{item.name}}</span>
+                    <span v-if="item.aid === 5">
+                      <Collapse class="menu-left-downlist">
+                        <Panel name="1">
+                            {{item.name}}
+                            <div slot="content">
+                              <ul class="menu-left-downlist-list">
+                                <li><span>注册服务</span></li>
+                                <li><span>翻译服务</span></li>
+                                <li><span>价格调研</span></li>
+                              </ul>
+                            </div>
+                        </Panel>
+                    </Collapse>
+                    </span>
                   </MenuItem>
                 </Menu>
+                <!--<Tree :data="data1"></Tree>-->
               </div>
             </Drawer>
             <div class="master-drawer-button">
@@ -38,7 +53,20 @@
             <div class="can-show-menu master-Menu">
               <Menu ref="contactMenu" mode="horizontal" :active-name = activeName @on-select="updateMenu">
                 <MenuItem :name=item.aid v-for="(item,index) in masterNavigationList" :key="index" :to="item.hyperlink" >
-                  {{item.name}}
+                  <span v-if="item.aid !== 5">{{item.name}}</span>
+                  <span v-if="item.aid === 5">
+                    <Dropdown>
+                        <a href="javascript:void(0)">
+                            {{item.name}}
+                            <Icon type="ios-arrow-down"></Icon>
+                        </a>
+                        <DropdownMenu slot="list">
+                            <DropdownItem>注册服务</DropdownItem>
+                            <DropdownItem>翻译服务</DropdownItem>
+                            <DropdownItem>价格调研</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                  </span>
                 </MenuItem>
               </Menu>
             </div>
@@ -269,6 +297,15 @@
   margin-bottom: 3px;
 }
 
+/* 顶部导航下拉模块颜色 */
+.ivu-menu-item .ivu-dropdown-rel > a{
+  color: #515a6e;
+}
+
+.ivu-menu-item .ivu-dropdown-rel > a:hover{
+  color: #2d8cf0;
+}
+
 .articleTypeSelect{
   width: 5rem;
 }
@@ -295,7 +332,6 @@
 }
 
 .about-icp{
-  width: 100%;
   margin-top: 0.5rem;
   color: white;
   text-align: center;
@@ -306,7 +342,7 @@
 }
 
 .master-foot-content{
-  width: 100%;
+  width: 900px;
   margin: 0 auto;
 }
 
@@ -322,7 +358,7 @@
 /*屏幕大于1200px*/
 @media screen and (min-width: 1200px){
   .master-foot-content{
-    width: 1200px;
+    width: 900px;
     margin: 0 auto;
   }
 
@@ -349,7 +385,7 @@
 /*屏幕大于960px而小于1200px*/
 @media screen and (min-width: 960px) and (max-width: 1199px){
   .master-foot-content{
-    width: 1200px;
+    width: 900px;
     margin: 0 auto;
   }
   .master-drawer-button{
@@ -374,7 +410,8 @@
 
 /*屏幕大于768px而小于960px*/
 @media screen and (min-width: 768px) and (max-width: 959px){
-  .master-header-content{
+  .master-header-content,
+  .master-foot-content{
     width: 100%;
   }
   .loginAndRegister{
@@ -401,7 +438,8 @@
 
 /*屏幕大于480px而小于768px*/
 @media screen and (min-width: 480px) and (max-width: 767px){
-  .master-header-content{
+  .master-header-content,
+  .master-foot-content{
     width: 100%;
   }
   .loginAndRegister{
@@ -423,7 +461,8 @@
 
 /*屏幕小于480px*/
 @media screen and (max-width: 479px){
-  .master-header-content{
+  .master-header-content,
+  .master-foot-content{
     width: 100%;
   }
   .loginAndRegister{
@@ -447,7 +486,9 @@
 </style>
 
 <style lang="less">
-
+  /**
+  scoped 作用于当前界面，而去掉scoped后作用于全局，所有可以覆盖iview原有的样式。
+  */
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   font-size: 1rem;
@@ -502,7 +543,44 @@
   text-align: center;
 }
 
-/**
-scoped 作用于当前界面，而去掉scoped后作用于全局，所有可以覆盖iview原有的样式。
-*/
+  /* 查看全部 */
+  .public-all{
+    padding-right: 1rem;
+    padding-bottom: 5px;
+    text-align: right;
+    color: #2D8CF0;
+  }
+
+  .menu-left-downlist{
+    background-color: transparent;
+    border-color: transparent;
+    font-size: 1rem;
+  }
+
+  .menu-left-downlist > .ivu-collapse-item{
+    margin-left: -24px;
+  }
+
+  .menu-left-downlist > .ivu-collapse-item > .ivu-collapse-header{
+    padding-left: 0 ;
+  }
+
+  .menu-left-downlist>.ivu-collapse-item>.ivu-collapse-header>i{
+    margin-right: 0 !important;
+  }
+
+  .menu-left-downlist>.ivu-collapse-item.ivu-collapse-item-active>.ivu-collapse-header{
+    border: 0;
+  }
+
+  .menu-left-downlist .ivu-collapse-content>.ivu-collapse-content-box{
+    padding: 0;
+  }
+
+  .menu-left-downlist-list{
+    padding-left: 15px;
+    list-style: none;
+    font-size: 1rem;
+  }
+
 </style>
