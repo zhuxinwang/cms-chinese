@@ -1,7 +1,7 @@
 <template>
-  <div class="public-width">
-    <h1>注册服务申请</h1>
-  </div>
+    <div class="public-width">
+        <h1>注册服务申请</h1>
+    </div>
 
 </template>
 

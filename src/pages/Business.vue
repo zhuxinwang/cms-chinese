@@ -1,7 +1,7 @@
 <template>
-  <div class="public-width">
-    <h1>业务服务</h1>
-  </div>
+    <div class="public-width">
+        <h1>业务服务</h1>
+    </div>
 
 </template>
 

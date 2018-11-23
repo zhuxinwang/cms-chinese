@@ -33,30 +33,30 @@ let aboutUsInfo = 'aboutUs/aboutUsInfo';//关于我们
  * @returns {string} 时间字符串形式
  */
 function timeConversion(date) {
-  let d = new Date(date);
-  let dateResult = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' '
-    + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-  return dateResult;
+    let d = new Date(date);
+    let dateResult = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' '
+        + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    return dateResult;
 }
 
 export default {
-  name: 'Global'
-  , BaseURLAPI
-  , UrlPrefix
-  , CHINESE_WEBSITE
-  , ENGLISH_WEBSITE
-  , masterNavigation
-  , getNavChildren
-  , carousel
-  , websiteInfo
-  , caseApplication
-  , getNews
-  , chineseFriendshipLink
-  , countFriendshipLinkClick
-  , registrationCaseDetails
-  , newsDetails
-  , newestNews
-  , newsTag
-  , aboutUsInfo
-  , timeConversion
+    name: 'Global'
+    , BaseURLAPI
+    , UrlPrefix
+    , CHINESE_WEBSITE
+    , ENGLISH_WEBSITE
+    , masterNavigation
+    , getNavChildren
+    , carousel
+    , websiteInfo
+    , caseApplication
+    , getNews
+    , chineseFriendshipLink
+    , countFriendshipLinkClick
+    , registrationCaseDetails
+    , newsDetails
+    , newestNews
+    , newsTag
+    , aboutUsInfo
+    , timeConversion
 }
