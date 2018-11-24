@@ -159,10 +159,11 @@
                 let that = this;
                 let caseParam = {
                     languageTypeId: that.$GLOBAL.CHINESE_WEBSITE
+                    , typeID: that.$GLOBAL.articleTypeForCase
                     , page: 0
                     , size: 3
                 };
-                this.$network.post(that.$GLOBAL.caseApplication, caseParam, function (data) {
+                this.$network.post(that.$GLOBAL.getArticle, caseParam, function (data) {
                     that.homePageRegistrationCaseList = data.content;
                     //拼接图片访问地址
                     let listLength = that.homePageRegistrationCaseList.length;
@@ -179,12 +180,13 @@
                 let that = this;
                 let newsParam = {
                     languageTypeId: that.$GLOBAL.CHINESE_WEBSITE
+                    ,typeID: that.$GLOBAL.articleTypeForNews
                     , page: 0
                     , size: 4
                     , tagList: '-1'
                     , title: '-1'
                 };
-                this.$network.post(that.$GLOBAL.getNews, newsParam, function (data) {
+                this.$network.post(that.$GLOBAL.getArticle, newsParam, function (data) {
                     that.homePageNewsList = data.content;
                     //拼接图片访问地址
                     let listLength = that.homePageNewsList.length;

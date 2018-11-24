@@ -8,9 +8,10 @@
                 </td>
                 <td>
                     <ul class="statute-type-ul">
-                        <li class="statute-type-item statute-type-item-active">东南亚国家法规</li>
-                        <li class="statute-type-item">南亚国家法规</li>
-                        <li class="statute-type-item">其他国家法规</li>
+                        <li class="statute-type-item statute-type-item-active" v-for="(item,index) in statuteList"
+                            :key="item.aid" @click="changeChildList(1,index)">
+                            <span>{{item.name}}</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -20,9 +21,10 @@
                 </td>
                 <td>
                     <ul class="statute-type-ul">
-                        <li class="statute-type-item">东南亚国家法规</li>
-                        <li class="statute-type-item statute-type-item-active">南亚国家法规</li>
-                        <li class="statute-type-item">其他国家法规</li>
+                        <li class="statute-type-item statute-type-item-active" v-for="(item,index) in secondStatuteList"
+                            :key="item.aid" @click="changeChildList(2,index)">
+                            <span>{{item.name}}</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -30,9 +32,10 @@
                 <td></td>
                 <td>
                     <ul class="statute-type-ul">
-                        <li class="statute-type-item">东南亚国家法规</li>
-                        <li class="statute-type-item statute-type-item-active">南亚国家法规</li>
-                        <li class="statute-type-item">其他国家法规</li>
+                        <li class="statute-type-item statute-type-item-active" v-for="(item,index) in thirdStatuteLsit"
+                            :key="item.aid" @click="changeChildList(3,index)">
+                            <span>{{item.name}}</span>
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -41,7 +44,12 @@
 
                 </td>
                 <td>
-
+                    <ul class="statute-type-ul">
+                        <li class="statute-type-item statute-type-item-active" v-for="(item,index) in fourthStatuteList"
+                            :key="item.aid" @click="changeChildList(3,index)">
+                            <span>{{item.name}}</span>
+                        </li>
+                    </ul>
                 </td>
             </tr>
         </table>
@@ -54,16 +62,18 @@
                     <Col :xs="20" :sm="17" :md="18" :lg="20">
                         <div class="">
                             <div>
-            <span class="statute-item-info-abstract">ICH Q1B：Stability Testing : Photostability Testing of New Drug Substances and Products 稳定性试验：新原
-料药和制剂光稳定性试验ICH Q1B：Stability Testing : Photostability Testing of New Drug Substances and Products 稳定性试验：新原
-料药和制剂光稳定性试验</span>
-                            </div>
-                            <div>
-                                <span class="statute-item-info-time">发布日期：2018-10-01</span>
-                                <span class="statute-item-info-browse">
-                  <img src="../assets/img/eye.png" alt="">
-                  15
-                </span>
+                            <span class="statute-item-info-abstract">
+                                ICH Q1B：Stability Testing : Photostability Testing of New Drug Substances and Products 稳定性试验：新原
+                                    料药和制剂光稳定性试验ICH Q1B：Stability Testing : Photostability Testing of New Drug Substances and Products 稳定性试验：新原
+                                    料药和制剂光稳定性试验
+                            </span>
+                                            </div>
+                                            <div>
+                                                <span class="statute-item-info-time">发布日期：2018-10-01</span>
+                                                <span class="statute-item-info-browse">
+                                  <img src="../assets/img/eye.png" alt="">
+                                  15
+                                </span>
                             </div>
                         </div>
                     </Col>
@@ -79,7 +89,70 @@
 
 <script>
     export default {
-        name: "Statute"
+        name: "Statute",
+        data() {
+            return {
+                // 一级注册法规列表
+                statuteList: [],
+
+                // 二级注册法规四级列表
+                secondStatuteList: [],
+                // 三级注册法规列表
+                thirdStatuteLsit: [],
+                // 四级注册法规列表
+                fourthStatuteList: [],
+
+            }
+        },
+        created() {
+            this.getStatuteList();
+        },
+        methods: {
+            // 请求注册法规列表
+            getStatuteList() {
+                let that = this;
+                let statuteParam = {
+                    typeAid: that.$GLOBAL.articleTypeForStatute
+                };
+                this.$network.post(that.$GLOBAL.getNavChildren, statuteParam, function (data) {
+                    that.statuteList = data[0].children;
+                    // that.newsObj.createTime = that.$GLOBAL.timeConversion(that.newsObj.createTime);
+                    console.log(that.statuteList[0].children);
+
+                    // 二级注册法规四级列表
+                    if (that.statuteList[0].children) {
+                        that.secondStatuteList = that.statuteList[0].children;
+                    }
+                    // 三级注册法规列表
+                    if (that.secondStatuteList[0].children) {
+                        that.thirdStatuteLsit = that.secondStatuteList[0].children;
+                    }
+                })
+            },
+
+            // 点击法规导航切换子列表
+            changeChildList(clickType, index) {
+                if (clickType === 1) {
+                    if (this.statuteList[index].children) {
+                        this.secondStatuteList = this.statuteList[index].children;
+                    } else {
+                        this.secondStatuteList = [];
+                    }
+                } else if (clickType === 2) {
+                    if (this.secondStatuteList[index].children) {
+                        this.thirdStatuteLsit = this.secondStatuteList[index].children;
+                    } else {
+                        this.thirdStatuteLsit = [];
+                    }
+                } else if (clickType === 3) {
+                    if (this.thirdStatuteLsit[index].children) {
+                        this.fourthStatuteList = this.thirdStatuteLsit[index].children;
+                    } else {
+                        this.fourthStatuteList = [];
+                    }
+                }
+            }
+        },
     }
 </script>
 

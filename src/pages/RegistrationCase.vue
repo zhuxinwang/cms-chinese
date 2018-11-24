@@ -83,10 +83,11 @@
                 let that = this;
                 let registrationCaseParam = {
                     languageTypeId: that.$GLOBAL.CHINESE_WEBSITE
+                    , typeID: that.$GLOBAL.articleTypeForCase
                     , page: page
                     , size: size
                 };
-                this.$network.post(that.$GLOBAL.caseApplication, registrationCaseParam, function (data) {
+                this.$network.post(that.$GLOBAL.getArticle, registrationCaseParam, function (data) {
                     that.registrationCaseList = data.content;
                     //获取总页数
                     that.totalElements = data.totalElements;

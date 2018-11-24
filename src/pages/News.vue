@@ -67,6 +67,7 @@
                 let that = this;
                 let newsParam = {
                     languageTypeId: that.$GLOBAL.CHINESE_WEBSITE
+                    , typeID:that.$GLOBAL.articleTypeForNews
                     , page: page
                     , size: size
                     , tagList: tagList

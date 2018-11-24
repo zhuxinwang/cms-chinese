@@ -48,7 +48,7 @@
                 let registrationCaseParam = {
                     articleAid: caseAid
                 };
-                this.$network.post(that.$GLOBAL.registrationCaseDetails, registrationCaseParam, function (data) {
+                this.$network.post(that.$GLOBAL.articleDetails, registrationCaseParam, function (data) {
                     that.registrationCaseObj = data;
                     that.registrationCaseObj.createTime = that.$GLOBAL.timeConversion(that.registrationCaseObj.createTime);
                 })

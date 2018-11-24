@@ -39,7 +39,7 @@ function networkAxios(method, url, params, success, failure) {
         // 请求方式不同使用不懂的参数名称
         data: method === 'POST' ? params : null,
         params: method === 'GET' ? params : null,
-        header: {'token': token},
+        headers: {'token': token},
         withCredentials: false
     }).then(function (res) {
         if (res.data.success === true) {

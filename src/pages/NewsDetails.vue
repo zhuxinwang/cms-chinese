@@ -55,7 +55,7 @@
                 let newsParam = {
                     articleAid: caseAid
                 };
-                this.$network.post(that.$GLOBAL.newsDetails, newsParam, function (data) {
+                this.$network.post(that.$GLOBAL.articleDetails, newsParam, function (data) {
                     that.newsObj = data;
                     that.newsObj.createTime = that.$GLOBAL.timeConversion(that.newsObj.createTime);
                 })
@@ -71,6 +71,7 @@
                 let that = this;
                 let newsParam = {
                     languageTypeId: that.$GLOBAL.CHINESE_WEBSITE
+                    , typeID: that.$GLOBAL.articleTypeForNews
                     , page: that.page
                     , size: that.size
                     , tagList: '-1'
