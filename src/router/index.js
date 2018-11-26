@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import HomePage from '@/pages/HomePage' //引入主页HomePage
 import Statute from '@/pages/Statute'  //引入法规页面
+import StatuteDetails from '@/pages/StatuteDetails'
 import News from '@/pages/News'  //引入新闻页面
 import RegistrationCase from '@/pages/RegistrationCase' //引入案例页面
 import RegistrationCaseDetails from '@/pages/RegistrationCaseDetails' //引入案例详情
@@ -12,6 +13,7 @@ import Apply from '@/pages/Apply'  //注册服务申请
 import Business from '@/pages/Business'  //业务服务
 import Database from '@/pages/Database'  //数据库
 import Term from '@/pages/Term.vue' // 术语解释
+import TermDetail from '@/pages/TermDetail' // 术语详情
 
 
 Vue.use(Router);
@@ -36,6 +38,12 @@ export default new Router({
             path: '/statute'
             , name: 'Statute'
             , component: Statute
+        }
+        // 法规详情
+        , {
+            path: '/statutedetail'
+            , name: 'StatuteDetails'
+            , component: StatuteDetails
         }
 
         //新闻资讯
@@ -94,10 +102,18 @@ export default new Router({
             , component: AboutUsInfo
         }
 
+        // 术语解释
         , {
             path: '/term'
             , name: 'Term'
             , component: Term
+        }
+
+        //
+        ,{
+            path: '/termdetail'
+            , name: 'TermDetail'
+            , component: TermDetail
         }
     ]
 })

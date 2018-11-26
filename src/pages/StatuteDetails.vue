@@ -6,14 +6,14 @@
                 <div class="case-subtitle">{{registrationCaseObj.subtitle}}</div>
                 <div class="case-author"> 作者：<span>{{registrationCaseObj.author}}</span> | <span>{{registrationCaseObj.createTime}}</span>
                     | <span>
-            浏览数：{{registrationCaseObj.clickNumber}}</span> <a @click="returnCase()">返回</a></div>
+            浏览数：{{registrationCaseObj.clickNumber}}</span> <a @click="returnStatute()">返回</a></div>
                 <div class="case-summary">{{registrationCaseObj.summary}}</div>
                 <div class="case-content" v-html="registrationCaseObj.content"></div>
             </div>
             <div class="case-details-recommend">
                 <Tabs>
                     <TabPane label="推荐阅读">
-                        <div class="recommend-title" v-for="item in registrationCaseList"
+                        <div class="recommend-title" v-for="item in statuteList"
                              @click="jumpRecommend(item.aid)">{{item.title}}
                         </div>
                     </TabPane>
@@ -25,59 +25,60 @@
 
 <script>
     export default {
-        name: "RegistrationCaseDetails"
+        name: "StatuteDetails"
         , data() {
             return {
-                caseAid: 0
+                articleAid: 0
                 , registrationCaseObj: {}
                 , page: 0
                 , size: 10
-                , registrationCaseList: [],
-                articleAid:0
+                , typeID: ''
+                , statuteList: []
             }
         }
         , created: function () {
-            this.caseAid = this.$route.query.caseAid;
             this.articleAid = this.$route.query.articleAid;
-            this.registrationCaseDetail(this.caseAid);
-            this.registrationCaseRecommend();
+            this.typeID = this.$route.query.typeID;
+            this.getStatuteDetail(this.articleAid);
+            this.statuteRecommend();
         }
 
         , methods: {
-            //1.根据caseAid获取详情
-            registrationCaseDetail: function (caseAid) {
+            //1.根据stetuteID获取详情
+            getStatuteDetail: function (articleAid) {
                 let that = this;
-                let registrationCaseParam = {
-                    articleAid: caseAid
+                let getStatuteDetailParam = {
+                    articleAid: articleAid
                 };
-                this.$network.post(that.$GLOBAL.articleDetails, registrationCaseParam, function (data) {
+                this.$network.post(that.$GLOBAL.articleDetails, getStatuteDetailParam, function (data) {
                     that.registrationCaseObj = data;
                     that.registrationCaseObj.createTime = that.$GLOBAL.timeConversion(that.registrationCaseObj.createTime);
                 })
             }
 
             //2.返回案例列表
-            , returnCase: function () {
-                this.$router.push({path: 'registrationcase'});
+            , returnStatute: function () {
+                this.$router.push({path: 'statute'});
             }
 
             //3.加载推荐阅读
-            , registrationCaseRecommend: function () {
+            , statuteRecommend: function () {
                 let that = this;
-                let registrationCaseParam = {
-                    articleAid: this.articleAid
+                let statuteParam = {
+                    languageTypeId: that.$GLOBAL.CHINESE_WEBSITE
+                    , typeID: this.typeID
                     , page: that.page
                     , size: that.size
                 };
-                this.$network.post(that.$GLOBAL.articleByFatherAid, registrationCaseParam, function (data) {
-                    that.registrationCaseList = data.content;
+                this.$network.post(that.$GLOBAL.getArticle, statuteParam, function (data) {
+                    that.statuteList = data.content;
                 })
             }
 
             //4.点击推荐阅读跳转
             , jumpRecommend: function (aid) {
-                this.$router.push({path: 'registrationcasedetails', query: {caseAid: aid}});
-                this.registrationCaseDetail(aid);
+                this.$router.push({path: 'statutedetail', query: {articleAid: aid}});
+                this.getStatuteDetail(aid);
             }
         }
     }
@@ -86,8 +87,7 @@
 <style scoped>
 
     .case-info {
-        display: inline-block;
-        width: 100%;
+        display: inline-block
     }
 
     .case-details-info {

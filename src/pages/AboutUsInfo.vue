@@ -21,10 +21,23 @@
             aboutUsInfo: function () {
                 let that = this;
                 let aboutUsInfoParam = {
-                    languageTypeId: that.$GLOBAL.CHINESE_WEBSITE
+                    languageTypeId: that.$GLOBAL.CHINESE_WEBSITE,
+                    typeID: this.$GLOBAL.articleTypeForAboutUS,
+                    page: 0,
+                    size: 10
                 };
-                this.$network.post(that.$GLOBAL.aboutUsInfo, aboutUsInfoParam, function (data) {
-                    that.aboutUsObj = data;
+                this.$network.post(that.$GLOBAL.getArticle, aboutUsInfoParam, function (data) {
+                    if (data.content.length > 0) {
+                        let getDetailsParam = {
+                            articleAid: data.content[0].aid
+                        };
+
+                        that.$network.post(that.$GLOBAL.articleDetails, getDetailsParam, function (data) {
+                            that.aboutUsObj = data;
+                            console.log(data)
+                        })
+
+                    }
                 })
             }
         }

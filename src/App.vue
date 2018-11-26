@@ -97,17 +97,19 @@
                     <Button slot="append" icon="ios-search" @click="searchStatuteOrNews()"></Button>
                 </Input>
             </div>
+            <div style="padding-bottom: 265px">
             <router-view></router-view>
+            </div>
 
             <div class="master-foot">
                 <div class="master-foot-content">
                     <div class="master-foot-about-us">
                         <h3 class="about-us-top">联系我们</h3>
                         <div>
-                            <img class="foot-ioc" src="./assets/ioc/address.png"/> 云南省昆明市呈贡县云上小镇
+                            <img class="foot-ioc" src="./assets/ioc/address.png"/> 云南省昆明市北京路175号外贸大楼603、604室　
                         </div>
                         <div>
-                            <img class="foot-ioc" src="./assets/ioc/phone.png"/> 18400000000
+                            <img class="foot-ioc" src="./assets/ioc/phone.png"/> 0871-68183761
                         </div>
                         <div>
                             <img class="foot-ioc" src="./assets/ioc/wechat.png"/> wechat
@@ -116,7 +118,7 @@
                             <img class="foot-ioc" src="./assets/ioc/qq.png"/> 321540346
                         </div>
                         <div>
-                            <img class="foot-ioc" src="./assets/ioc/email.png"/> xxxxxxx@aliyun.com
+                            <img class="foot-ioc" src="./assets/ioc/email.png"/> ynyplthyxh@163.com
                         </div>
                     </div>
                     <div class="about-icp">
@@ -264,6 +266,10 @@
 
     .master {
         margin-top: 0.2rem;
+        min-height: 100%;
+        height: auto!important;
+        height: 100%;/* 兼容IE6，IE6不支持min-height */
+        position: relative;
     }
 
     .master-header {
@@ -331,8 +337,16 @@
 
     .master-foot {
         width: 100%;
-        height: 100%;
+        /*height: 100%;*/
         background-color: #333;
+
+        position: absolute;
+        bottom: 0;
+        /*width: 100%;*/
+        /*height: 60px;*/
+        /*background: #6cf;*/
+        height: 265px;
+        clear: both;
     }
 
     .master-foot-about-us {
@@ -361,7 +375,7 @@
     }
 
     .master-foot-content {
-        width: 900px;
+        width: 1200px;
         margin: 0 auto;
     }
 
@@ -417,7 +431,7 @@
     /*屏幕大于1200px*/
     @media screen and (min-width: 1200px) {
         .master-foot-content {
-            width: 900px;
+            width: 1200px;
             margin: 0 auto;
         }
 
@@ -430,7 +444,7 @@
         }
 
         .header-search {
-            margin-left: 18%;
+            /*margin-left: 18%;*/
             width: 25rem;
             z-index: 999;
         }
@@ -444,7 +458,7 @@
     /*屏幕大于960px而小于1200px*/
     @media screen and (min-width: 960px) and (max-width: 1199px) {
         .master-foot-content {
-            width: 900px;
+            width: 1200px;
             margin: 0 auto;
         }
 
@@ -457,7 +471,7 @@
         }
 
         .header-search {
-            margin-left: 18%;
+            /*margin-left: 18%;*/
             width: 25rem;
             z-index: 999;
         }
@@ -553,9 +567,17 @@
     /**
     scoped 作用于当前界面，而去掉scoped后作用于全局，所有可以覆盖iview原有的样式。
     */
+
+    html,body {
+        margin: 0;
+        padding: 0!important;
+        height: 100%;
+    }
+
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         font-size: 1rem;
+        height: 100%;
     }
 
     /*屏幕大于1200px*/

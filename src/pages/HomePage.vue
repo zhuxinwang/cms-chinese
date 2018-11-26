@@ -236,7 +236,7 @@
             //7.点击跳转到注册案例/新闻资源
             , jumpCaseOrNews: function (caseOrNews, aid) {
                 if (caseOrNews === 'case') {
-                    this.$router.push({path: 'registrationcasedetails', query: {caseAid: aid}});
+                    this.$router.push({path: 'registrationcasedetails', query: {caseAid: aid,articleAid:aid}});
                 } else if (caseOrNews === 'news') {
                     this.$router.push({path: 'newsdetails', query: {caseAid: aid}});
                 }

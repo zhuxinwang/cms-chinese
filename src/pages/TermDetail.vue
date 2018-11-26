@@ -2,18 +2,18 @@
     <div class="public-width">
         <div class="case-info">
             <div class="case-details-info">
-                <div class="case-title">{{registrationCaseObj.title}}</div>
-                <div class="case-subtitle">{{registrationCaseObj.subtitle}}</div>
-                <div class="case-author"> 作者：<span>{{registrationCaseObj.author}}</span> | <span>{{registrationCaseObj.createTime}}</span>
-                    | <span>
-            浏览数：{{registrationCaseObj.clickNumber}}</span> <a @click="returnCase()">返回</a></div>
-                <div class="case-summary">{{registrationCaseObj.summary}}</div>
-                <div class="case-content" v-html="registrationCaseObj.content"></div>
+                <div class="case-title">{{termObj.title}}</div>
+                <div class="case-author"><a @click="returnStatute()">返回</a></div>
+                <div class="case-summary">
+                    <div class="case-content-title">英文：</div>{{termObj.summary}}</div>
+                <div class="case-content">
+                    <span class="case-content-title">中文：</span><span v-html="termObj.content"></span>
+                </div>
             </div>
             <div class="case-details-recommend">
                 <Tabs>
                     <TabPane label="推荐阅读">
-                        <div class="recommend-title" v-for="item in registrationCaseList"
+                        <div class="recommend-title" v-for="item in termList"
                              @click="jumpRecommend(item.aid)">{{item.title}}
                         </div>
                     </TabPane>
@@ -25,74 +25,77 @@
 
 <script>
     export default {
-        name: "RegistrationCaseDetails"
+        name: "TermDetail"
         , data() {
             return {
-                caseAid: 0
-                , registrationCaseObj: {}
+                articleAid: 0
+                , termObj: {}
                 , page: 0
                 , size: 10
-                , registrationCaseList: [],
-                articleAid:0
+                , typeID: ''
+                , termList: []
             }
         }
         , created: function () {
-            this.caseAid = this.$route.query.caseAid;
             this.articleAid = this.$route.query.articleAid;
-            this.registrationCaseDetail(this.caseAid);
-            this.registrationCaseRecommend();
+            this.getTermDetail(this.articleAid);
+            this.termRecommend();
         }
 
         , methods: {
-            //1.根据caseAid获取详情
-            registrationCaseDetail: function (caseAid) {
+            //1.根据stetuteID获取详情
+            getTermDetail: function (articleAid) {
                 let that = this;
-                let registrationCaseParam = {
-                    articleAid: caseAid
+                let getTermObjParam = {
+                    articleAid: articleAid
                 };
-                this.$network.post(that.$GLOBAL.articleDetails, registrationCaseParam, function (data) {
-                    that.registrationCaseObj = data;
-                    that.registrationCaseObj.createTime = that.$GLOBAL.timeConversion(that.registrationCaseObj.createTime);
+                this.$network.post(that.$GLOBAL.articleDetails, getTermObjParam, function (data) {
+                    that.termObj = data;
                 })
             }
 
             //2.返回案例列表
-            , returnCase: function () {
-                this.$router.push({path: 'registrationcase'});
+            , returnTerm: function () {
+                this.$router.push({path: 'term'});
             }
 
             //3.加载推荐阅读
-            , registrationCaseRecommend: function () {
+            , termRecommend: function () {
                 let that = this;
-                let registrationCaseParam = {
-                    articleAid: this.articleAid
+                let termParam = {
+                    languageTypeId: that.$GLOBAL.CHINESE_WEBSITE
+                    , typeID: this.$GLOBAL.articleTypeForTerm
                     , page: that.page
                     , size: that.size
                 };
-                this.$network.post(that.$GLOBAL.articleByFatherAid, registrationCaseParam, function (data) {
-                    that.registrationCaseList = data.content;
+                this.$network.post(that.$GLOBAL.getArticle, termParam, function (data) {
+                    that.termList = data.content;
                 })
             }
 
             //4.点击推荐阅读跳转
             , jumpRecommend: function (aid) {
-                this.$router.push({path: 'registrationcasedetails', query: {caseAid: aid}});
-                this.registrationCaseDetail(aid);
+                this.$router.push({path: 'termdetail', query: {articleAid: aid}});
+                this.getTermDetail(aid);
             }
         }
     }
 </script>
 
 <style scoped>
-
     .case-info {
-        display: inline-block;
-        width: 100%;
+        display: inline-block
+    }
+
+    .case-content-title{
+        font-size: 1.2rem;
+        font-weight: 600;
     }
 
     .case-details-info {
         float: left;
         width: 80%;
+        font-size: 16px;
     }
 
     .case-details-recommend {
@@ -108,7 +111,7 @@
 
     .case-title {
         margin-top: 0.5rem;
-        font-size: 1.2rem;
+        font-size: 1.4rem;
         font-weight: 600;
         text-align: center;
         overflow: hidden;
@@ -131,7 +134,6 @@
     }
 
     .case-summary {
-        text-align: center;
         margin-top: 1rem;
         margin-bottom: 1rem;
     }

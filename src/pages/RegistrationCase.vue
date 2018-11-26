@@ -1,18 +1,18 @@
 <template>
     <div class="public-width">
-        <h3>注册服务申请案例</h3>
         <div>
             <div class="case-info">
                 <div class="registration-case-typetitle">企业案例</div>
-                <Row>
+                <div v-if="registrationCaseList.length === 0" class="case-nothave">暂无企业药品案例</div>
+                <Row v-if="registrationCaseList.length > 0">
                     <Col class="registration-case" v-for="item in registrationCaseList" :key="item.aid">
                         <div class="mask-layer">
                             <div>
-                                <Button class="case-button" v-on:click="jumpCaseDetail(item.aid)">查看企业案例</Button>
+                                <Button class="case-button" v-on:click="jumpCaseDetail(item.aid)">查看企业信息</Button>
                             </div>
                             <div>
                                 <a href="#drug-case">
-                                    <Button class="case-button">查看企业药品案例</Button>
+                                    <Button class="case-button" @click="getProductCase(0,item.aid)">查看企业药品案例</Button>
                                 </a>
                             </div>
                         </div>
@@ -28,7 +28,7 @@
                         </Card>
                     </Col>
                 </Row>
-                <div class="page-paging case-page">
+                <div v-if="registrationCaseList.length > 0" class="page-paging case-page">
                     <Page :total=totalElements :page-size=size @on-change="handlePage" show-total/>
                 </div>
             </div>
@@ -37,8 +37,9 @@
         <div id="drug-case">
             <div class="case-info">
                 <div class="registration-case-typetitle">企业药品案例</div>
-                <Row>
-                    <Col class="registration-case" v-for="(item) in registrationCaseList" :key="item.aid">
+                <div v-if="productList.length === 0" class="case-nothave">暂无企业药品案例</div>
+                <Row v-if="productList.length > 0">
+                    <Col class="registration-case" v-for="(item) in productList" :key="item.aid">
                         <Card :bordered="false">
                             <p class="case-title">{{item.title}}</p>
                             <p class="case-time">{{item.createTime}}</p>
@@ -53,9 +54,10 @@
                         </Card>
                     </Col>
                 </Row>
-                <div class="page-paging case-page">
-                    <Page :total=totalElements :page-size=size @on-change="handlePage" show-total/>
+                <div v-if="productList.length > 0" class="page-paging case-page">
+                    <Page :total=productTotalElements :page-size=size @on-change="productHandlePage" show-total/>
                 </div>
+
             </div>
         </div>
     </div>
@@ -68,9 +70,12 @@
         , data() {
             return {
                 page: 0
-                , size: 6
+                , size: 3
                 , totalElements: 0
+                , productTotalElements: 0
                 , registrationCaseList: []
+                , productList:[]
+                , articleAid:0
             }
         }
 
@@ -79,6 +84,7 @@
         }
 
         , methods: {
+            // 获取公司案例
             registrationCase: function (page, size) {
                 let that = this;
                 let registrationCaseParam = {
@@ -99,7 +105,9 @@
                         }
                         that.registrationCaseList[i].createTime = that.$GLOBAL.timeConversion(that.registrationCaseList[i].createTime);
                     }
-                    console.log(that.registrationCaseList)
+
+                    that.articleAid =  that.registrationCaseList[0].aid;
+                    that.getProductCase(0, that.articleAid);
                 })
             }
 
@@ -113,7 +121,41 @@
 
             //3.查看案例详情
             , jumpCaseDetail: function (aid) {
-                this.$router.push({path: 'registrationcasedetails', query: {caseAid: aid}});
+                this.$router.push({path: 'registrationcasedetails', query: {caseAid: aid,articleAid: this.articleAid}});
+            }
+
+            // 获取公司下产品案例
+            , getProductCase(page,aid){
+                // 获取案例列表参数
+                let getProductParam = {
+                    articleAid: aid,
+                    page: page,
+                    size:this.size
+                };
+
+                this.articleAid = aid;
+                // 发起请求
+                let that = this;
+                this.$network.post(that.$GLOBAL.articleByFatherAid, getProductParam, function (data) {
+                    that.productList = data.content;
+                    //获取总页数
+                    that.productTotalElements = data.totalElements;
+                    //拼接图片访问地址
+                    let listLength = that.productList.length;
+                    for (let i = 0; i < listLength; i++) {
+                        if (that.productList[i].thumbnailUrl) {
+                            that.productList[i].thumbnailUrl = that.$GLOBAL.UrlPrefix + that.productList[i].thumbnailUrl;
+                        }
+                        that.productList[i].createTime = that.$GLOBAL.timeConversion(that.productList[i].createTime);
+                    }
+                })
+            }
+
+            ,productHandlePage(value){
+                this.page = value;
+                //由于接口是从0开始的，而页面page控件是从1开始的
+                let pageNum = this.page - 1;
+                this.getProductCase(pageNum, this.articleAid)
             }
         }
     }
@@ -129,9 +171,10 @@
 
     .registration-case-typetitle {
         padding-top: 1rem;
-        margin-left: 2.5%;
-        font-size: 1.1rem;
+        /*margin-left: 2.5%;*/
+        font-size: 1.2rem;
         font-weight: 600;
+        text-align: center;
     }
 
     .registration-case {
@@ -223,6 +266,14 @@
         position: absolute;
         right: 1rem;
         bottom: 1rem;
+    }
+
+    .case-nothave{
+        text-align: center;
+        color: #999;
+        font-size: 16px;
+        margin-top: 30px;
+        margin-bottom: 50px;
     }
 
     @media screen and (min-width: 768px) and (max-width: 959px) {

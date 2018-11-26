@@ -1,5 +1,6 @@
 // let BaseURLAPI = '../';
-let BaseURLAPI = 'http://192.168.1.37:8084/';
+// let BaseURLAPI = 'http://192.168.1.37:8084/';
+let BaseURLAPI = 'http://49.4.78.57:8083/';
 let UrlPrefix = 'http://49.4.78.57:8081/upload/';
 
 let CHINESE_WEBSITE = 1;  //中文网站
@@ -9,6 +10,7 @@ let articleTypeForNews = '3';
 let articleTypeForCase = '13';
 let articleTypeForTerm = '14';
 let articleTypeForStatute = '2';
+let articleTypeForAboutUS = '7';
 
 
 /**
@@ -26,6 +28,7 @@ let countFriendshipLinkClick = 'homepage/countFriendshipLinkClick';  //8.统计�
 
 let getArticle = 'article/article'; // 9.获取文章列表
 let articleDetails = 'article/articleDetails'; // 9.根据文章id查询详情
+let articleByFatherAid = 'article/queryArticleByFatherAid';
 
 // let registrationCaseDetails = 'registrationCase/registrationCaseDetails'; // 10.根据案例id查询详情
 let newsDetails = 'news/newsDetails'; // 11.根据新闻id查询详情
@@ -72,5 +75,7 @@ export default {
     , articleTypeForCase
     , articleTypeForTerm
     , articleTypeForStatute
+    , articleTypeForAboutUS
+    , articleByFatherAid
     , timeConversion
 }
