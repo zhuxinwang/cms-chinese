@@ -8,7 +8,8 @@
                 </td>
                 <td>
                     <ul class="statute-type-ul">
-                        <li class="statute-type-item" v-for="(item,index) in statuteList" :class="item.isActive?'statute-type-item-active':''"
+                        <li class="statute-type-item" v-for="(item,index) in statuteList"
+                            :class="item.isActive?'statute-type-item-active':''"
                             :key="item.aid" @click="changeChildList(1, index, item)">
                             <span>{{item.name}}</span>
                         </li>
@@ -21,7 +22,8 @@
                 </td>
                 <td>
                     <ul class="statute-type-ul">
-                        <li class="statute-type-item" v-for="(item,index) in secondStatuteList" :class="item.isActive?'statute-type-item-active':''"
+                        <li class="statute-type-item" v-for="(item,index) in secondStatuteList"
+                            :class="item.isActive?'statute-type-item-active':''"
                             :key="item.aid" @click="changeChildList(2, index, item)">
                             <span>{{item.name}}</span>
                         </li>
@@ -32,7 +34,8 @@
                 <td></td>
                 <td>
                     <ul class="statute-type-ul">
-                        <li class="statute-type-item" v-for="(item,index) in thirdStatuteLsit" :class="item.isActive?'statute-type-item-active':''"
+                        <li class="statute-type-item" v-for="(item,index) in thirdStatuteLsit"
+                            :class="item.isActive?'statute-type-item-active':''"
                             :key="item.aid" @click="changeChildList(3, index, item)">
                             <span>{{item.name}}</span>
                         </li>
@@ -45,7 +48,8 @@
                 </td>
                 <td>
                     <ul class="statute-type-ul">
-                        <li class="statute-type-item" v-for="(item,index) in fourthStatuteList" :class="item.isActive?'statute-type-item-active':''"
+                        <li class="statute-type-item" v-for="(item,index) in fourthStatuteList"
+                            :class="item.isActive?'statute-type-item-active':''"
                             :key="item.aid" @click="changeChildList(3, index, item)">
                             <span>{{item.name}}</span>
                         </li>
@@ -107,14 +111,34 @@
                 // 文章列表每页条数
                 size: 10,
                 // 总页数
-                totalElements:0,
+                totalElements: 0,
 
                 // 文章列表
-                articleList:[],
+                articleList: [],
             }
         },
         created() {
-            this.getStatuteList();
+            let title = this.$route.query.title;
+
+            // 判断是否为首页搜索跳转过来的，如果是请求搜索文章列表接口
+            if (title) {
+                // 请求参数
+                let getStatuteListParam = {
+                    languageTypeId: this.$GLOBAL.CHINESE_WEBSITE,
+                    typeID: this.$GLOBAL.articleTypeForStatute,
+                    page: this.title,
+                    size: this.size,
+                    tagList: '-1',
+                    title: title,
+                };
+                let that = this;
+                this.$network.post(this.$GLOBAL.getNews, getStatuteListParam, function (data) {
+                    that.articleList = data.content;
+                    that.totalElements = data.totalElements;
+                })
+            } else {
+                this.getStatuteList();
+            }
         },
         methods: {
             // 请求注册法规列表
@@ -150,36 +174,36 @@
             },
 
             // 点击法规导航切换子列表
-            changeChildList(clickType, index,item) {
+            changeChildList(clickType, index, item) {
                 if (clickType === 1) {
-                    this.selectItemInNav(index,this.statuteList);
+                    this.selectItemInNav(index, this.statuteList);
                     if (this.statuteList[index].children) {
                         this.secondStatuteList = this.statuteList[index].children;
-                        this.selectItemInNav(0,this.secondStatuteList);
+                        this.selectItemInNav(0, this.secondStatuteList);
                     } else {
                         this.secondStatuteList = [];
                         this.thirdStatuteLsit = [];
                         this.fourthStatuteList = [];
                     }
                 } else if (clickType === 2) {
-                    this.selectItemInNav(index,this.secondStatuteList);
+                    this.selectItemInNav(index, this.secondStatuteList);
                     if (this.secondStatuteList[index].children) {
                         this.thirdStatuteLsit = this.secondStatuteList[index].children;
-                        this.selectItemInNav(0,this.thirdStatuteLsit);
+                        this.selectItemInNav(0, this.thirdStatuteLsit);
                     } else {
                         this.thirdStatuteLsit = [];
                         this.fourthStatuteList = [];
                     }
                 } else if (clickType === 3) {
-                    this.selectItemInNav(index,this.thirdStatuteLsit);
+                    this.selectItemInNav(index, this.thirdStatuteLsit);
                     if (this.thirdStatuteLsit[index].children) {
                         this.fourthStatuteList = this.thirdStatuteLsit[index].children;
-                        this.selectItemInNav(0,this.fourthStatuteList);
+                        this.selectItemInNav(0, this.fourthStatuteList);
                     } else {
                         this.fourthStatuteList = [];
                     }
-                }else {
-                    this.selectItemInNav(index,this.fourthStatuteList);
+                } else {
+                    this.selectItemInNav(index, this.fourthStatuteList);
                 }
 
                 // 找出子节点最深节点
@@ -224,13 +248,9 @@
             },
 
             /**
-             * 建一个树形结构数组转为需要的结构
-             *
-             * @param {Array} tree 需要转换的tree
-             * @param {Object} map 映射对象
-             * @return {Array} 返回转换过后的tree
+             * 将一个树形结构数组转为需要的结构
              */
-            convertTree(tree){
+            convertTree(tree) {
                 const result = [];
 
                 // 遍历 tree
@@ -264,9 +284,9 @@
             },
 
             // 找出导航一个节点，将其设置为选中样式
-            selectItemInNav(index,list){
+            selectItemInNav(index, list) {
                 let length = list.length;
-                for(let i = 0; i < length; i++){
+                for (let i = 0; i < length; i++) {
                     list[i].isActive = false;
                 }
                 list[index].isActive = true;
@@ -274,7 +294,7 @@
 
             //3.查看法规详情
             jumpStatuteDetail: function (aid) {
-                this.$router.push({path: 'statutedetail', query: {articleAid: aid,typeID:this.typeID}});
+                this.$router.push({path: 'statutedetail', query: {articleAid: aid, typeID: this.typeID}});
             }
 
         },
@@ -377,7 +397,7 @@
         cursor: pointer;
     }
 
-    .statute-nothave{
+    .statute-nothave {
         text-align: center;
         color: #999;
         font-size: 18px;

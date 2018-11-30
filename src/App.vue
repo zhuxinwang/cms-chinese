@@ -97,7 +97,7 @@
                     <Button slot="append" icon="ios-search" @click="searchStatuteOrNews()"></Button>
                 </Input>
             </div>
-            <div style="padding-bottom: 265px">
+            <div style="padding-bottom: 285px">
             <router-view></router-view>
             </div>
 

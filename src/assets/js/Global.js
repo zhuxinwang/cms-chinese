@@ -1,6 +1,6 @@
 // let BaseURLAPI = '../';
-// let BaseURLAPI = 'http://192.168.1.37:8084/';
-let BaseURLAPI = 'http://49.4.78.57:8083/';
+let BaseURLAPI = 'http://192.168.1.56:8083/';
+// let BaseURLAPI = 'http://49.4.78.57:8083/';
 let UrlPrefix = 'http://49.4.78.57:8081/upload/';
 
 let CHINESE_WEBSITE = 1;  //中文网站
@@ -8,6 +8,7 @@ let ENGLISH_WEBSITE = 2;  //英文网站
 
 let articleTypeForNews = '3';
 let articleTypeForCase = '13';
+let articleTypeForProductCase = '15';
 let articleTypeForTerm = '14';
 let articleTypeForStatute = '2';
 let articleTypeForAboutUS = '7';
@@ -73,6 +74,7 @@ export default {
     , articleDetails
     , articleTypeForNews
     , articleTypeForCase
+    , articleTypeForProductCase
     , articleTypeForTerm
     , articleTypeForStatute
     , articleTypeForAboutUS

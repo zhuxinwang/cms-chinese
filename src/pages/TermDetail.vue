@@ -3,7 +3,7 @@
         <div class="case-info">
             <div class="case-details-info">
                 <div class="case-title">{{termObj.title}}</div>
-                <div class="case-author"><a @click="returnStatute()">返回</a></div>
+                <div class="case-author"><a @click="returnTerm()">返回</a></div>
                 <div class="case-summary">
                     <div class="case-content-title">英文：</div>{{termObj.summary}}</div>
                 <div class="case-content">

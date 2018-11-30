@@ -54,9 +54,9 @@
                         </Card>
                     </Col>
                 </Row>
-                <div v-if="productList.length > 0" class="page-paging case-page">
-                    <Page :total=productTotalElements :page-size=size @on-change="productHandlePage" show-total/>
-                </div>
+                <!--<div v-if="productList.length > 0" class="page-paging case-page">-->
+                    <!--<Page :total=productTotalElements :page-size=size @on-change="productHandlePage" show-total/>-->
+                <!--</div>-->
 
             </div>
         </div>
@@ -80,7 +80,30 @@
         }
 
         , created: function () {
-            this.registrationCase(this.page, this.size)
+            this.registrationCase(this.page, this.size);
+
+            // 初始进入请求加载所有药品案例前十条
+            // 药品案例不需要分页显示，size值比较大
+            let getProductListParam={
+                languageTypeId:this.$GLOBAL.CHINESE_WEBSITE,
+                typeID:this.$GLOBAL.articleTypeForProductCase,
+                page:this.page,
+                size:200
+            };
+
+            let that = this;
+            this.$network.post(this.$GLOBAL.getArticle,getProductListParam,function (data) {
+                that.productList = data.content;
+                that.totalElements = data.totalElements;
+                //拼接图片访问地址
+                let listLength = that.productList.length;
+                for (let i = 0; i < listLength; i++) {
+                    if (that.productList[i].thumbnailUrl) {
+                        that.productList[i].thumbnailUrl = that.$GLOBAL.UrlPrefix + that.productList[i].thumbnailUrl;
+                    }
+                    that.productList[i].createTime = that.$GLOBAL.timeConversion(that.productList[i].createTime);
+                }
+            })
         }
 
         , methods: {
@@ -107,7 +130,6 @@
                     }
 
                     that.articleAid =  that.registrationCaseList[0].aid;
-                    that.getProductCase(0, that.articleAid);
                 })
             }
 
@@ -130,7 +152,7 @@
                 let getProductParam = {
                     articleAid: aid,
                     page: page,
-                    size:this.size
+                    size:200
                 };
 
                 this.articleAid = aid;
@@ -272,8 +294,8 @@
         text-align: center;
         color: #999;
         font-size: 16px;
-        margin-top: 30px;
-        margin-bottom: 50px;
+        padding-top: 30px;
+        padding-bottom: 50px;
     }
 
     @media screen and (min-width: 768px) and (max-width: 959px) {
