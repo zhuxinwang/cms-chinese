@@ -77,7 +77,7 @@
                     , tagList: '-1'
                     , title: '-1'
                 };
-                this.$network.post(that.$GLOBAL.getNews, newsParam, function (data) {
+                this.$network.post(that.$GLOBAL.articleByCondition, newsParam, function (data) {
                     that.newsRecommendList = data.content;
                 })
             }

@@ -54,8 +54,7 @@
 
                 // 请求列表
                 let that = this;
-                this.$network.post(that.$GLOBAL.getNews, getTermListByKeyParam, function (data) {
-                    console.log(data.content);
+                this.$network.post(that.$GLOBAL.articleByCondition, getTermListByKeyParam, function (data) {
                     that.termList = data.content;
                 });
             },

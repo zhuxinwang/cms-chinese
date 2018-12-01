@@ -94,6 +94,8 @@
         name: "Statute",
         data() {
             return {
+                StatuteTypeList: [],
+
                 // 一级注册法规列表
                 statuteList: [],
 
@@ -115,30 +117,27 @@
 
                 // 文章列表
                 articleList: [],
+                title: '-1',
+
+                parentList: [],
+
+                testList: []
             }
         },
         created() {
-            let title = this.$route.query.title;
+            // let title = this.$route.query.title;
 
-            // 判断是否为首页搜索跳转过来的，如果是请求搜索文章列表接口
-            if (title) {
-                // 请求参数
-                let getStatuteListParam = {
-                    languageTypeId: this.$GLOBAL.CHINESE_WEBSITE,
-                    typeID: this.$GLOBAL.articleTypeForStatute,
-                    page: this.title,
-                    size: this.size,
-                    tagList: '-1',
-                    title: title,
-                };
-                let that = this;
-                this.$network.post(this.$GLOBAL.getNews, getStatuteListParam, function (data) {
-                    that.articleList = data.content;
-                    that.totalElements = data.totalElements;
-                })
+            // 断是否为首页搜索跳转过来的
+            let titleTemp;
+            titleTemp = this.$route.query.title;
+            if (titleTemp === undefined) {
+                this.title = '-1';
             } else {
-                this.getStatuteList();
+                this.title = titleTemp;
+                this.typeID = this.$GLOBAL.articleTypeForStatute
             }
+
+            this.getStatuteList();
         },
         methods: {
             // 请求注册法规列表
@@ -148,7 +147,7 @@
                     typeAid: that.$GLOBAL.articleTypeForStatute
                 };
                 this.$network.post(that.$GLOBAL.getNavChildren, statuteParam, function (data) {
-                    // console.log(that.convertTree(data));
+                    that.StatuteTypeList = that.convertTree(data)
                     that.statuteList = that.convertTree(data)[0].children;
                     that.statuteList[0].isActive = true;
 
@@ -206,6 +205,7 @@
                     this.selectItemInNav(index, this.fourthStatuteList);
                 }
 
+                this.title = '-1';
                 // 找出子节点最深节点
                 this.findDeepst(item);
                 this.getArticleList();
@@ -223,19 +223,20 @@
             // 根据文章类型aid 查出文章列表
             getArticleList() {
                 // 请求参数对象
-                let getArticleListParam = {
+                // 请求参数
+                let getStatuteListParam = {
                     languageTypeId: this.$GLOBAL.CHINESE_WEBSITE,
                     typeID: this.typeID,
                     page: this.page,
-                    size: this.size
+                    size: this.size,
+                    tagList: '-1',
+                    title: this.title,
                 };
-
                 let that = this;
-                this.$network.post(that.$GLOBAL.getArticle, getArticleListParam, function (data) {
+                this.$network.post(this.$GLOBAL.articleByCondition, getStatuteListParam, function (data) {
                     that.articleList = data.content;
-
-                    //获取总页数
                     that.totalElements = data.totalElements;
+
                     //拼接图片访问地址
                     let listLength = that.articleList.length;
                     for (let i = 0; i < listLength; i++) {
@@ -244,7 +245,27 @@
                         }
                         that.articleList[i].createTime = that.$GLOBAL.timeConversion(that.articleList[i].createTime);
                     }
-                });
+
+
+                    // 如果为搜索，将搜索类型全置为空
+                    if (that.title !== '-1') {
+                        for (let i = 0; i < that.statuteList.length; i++) {
+                            that.statuteList[i].isActive = false;
+                        }
+
+                        for (let i = 0; i < that.secondStatuteList.length; i++) {
+                            that.secondStatuteList[i].isActive = false;
+                        }
+
+                        for (let i = 0; i < that.thirdStatuteLsit.length; i++) {
+                            that.thirdStatuteLsit[i].isActive = false;
+                        }
+
+                        for (let i = 0; i < that.fourthStatuteList.length; i++) {
+                            that.fourthStatuteList[i].isActive = false;
+                        }
+                    }
+                })
             },
 
             /**
@@ -289,15 +310,17 @@
                 for (let i = 0; i < length; i++) {
                     list[i].isActive = false;
                 }
-                list[index].isActive = true;
+                if (list[index]){
+                    list[index].isActive = true;
+                }
+
             },
 
             //3.查看法规详情
             jumpStatuteDetail: function (aid) {
                 this.$router.push({path: 'statutedetail', query: {articleAid: aid, typeID: this.typeID}});
-            }
-
-        },
+            },
+        }
     }
 </script>
 

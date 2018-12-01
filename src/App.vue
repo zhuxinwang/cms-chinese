@@ -211,7 +211,6 @@
                         that.$refs.contactMenu.updateOpened();
                         that.$refs.contactMenu.updateActiveName()
                     });
-                    console.log(that.masterNavigationList)
                 })
             }
 

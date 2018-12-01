@@ -73,7 +73,7 @@
                     , tagList: tagList
                     , title: title
                 };
-                this.$network.post(that.$GLOBAL.getNews, newsParam, function (data) {
+                this.$network.post(that.$GLOBAL.articleByCondition, newsParam, function (data) {
                     that.newsList = data.content;
                     //获取总页数
                     that.totalElements = data.totalElements;
@@ -112,7 +112,6 @@
             //5.标签CheckBox发生改变
             , checkboxChange: function () {
                 //将checkboxSocial装换为,拼接的字符串 -1时为请求全部
-                console.log(this.checkboxSocial);
                 if (this.checkboxSocial.length === 0) {
                     this.news(0, 10, '-1', this.title);
                 }
